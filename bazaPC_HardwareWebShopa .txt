@@ -1,0 +1,69 @@
+
+CREATE TABLE cart (
+  cartid int(11) NOT NULL PRIMARY KEY,
+  userid int(11) NOT NULL FOREIGN KEY,
+  amount int NOT NULL,
+  FOREIGN KEY (userid) REFERENCES users (userID)
+); 
+  
+
+CREATE TABLE cartitems (
+  cartid int(11) NOT NULL FOREIGN KEY,
+  itemid int(11) NOT NULL FOREIGN KEY,
+  quantity int(11) NOT NULL,
+  ADD CONSTRAINT pk_cartid PRIMARY KEY (cartid,itemid),
+  FOREIGN KEY (cartid) REFERENCES cart (cartid),
+  FOREIGN KEY (itemid) REFERENCES items (itemid)
+); 
+
+
+CREATE TABLE categories (
+  categoryid int(11) NOT NULL PRIMARY KEY,
+  name varchar(30) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS `images` (
+  imageid int(11) NOT NULL PRIMARY KEY,
+  image longblob NOT NULL
+);
+
+
+CREATE TABLE items (
+  itemid int(11) NOT NULL PRIMARY KEY,
+  name varchar(100) NOT NULL,
+  price int(11) NOT NULL,
+  specifications varchar(255)  NOT NULL,
+  warranty varchar(255)  NOT NULL,
+  categoryid int(11) NOT NULL FOREIGN KEY,
+  manufacturerid int(11) NOT NULL FOREIGN KEY,
+  imageid int(11) NOT NULL FOREIGN KEY,
+  
+  FOREIGN KEY (categoryid) REFERENCES categories (categoryid),
+  FOREIGN KEY (imageid) REFERENCES images (imageid),
+  FOREIGN KEY (manufacturerid) REFERENCES manufacturer (manufacturerid)
+);
+
+
+CREATE TABLE manufacturer (
+  manufacturerid int(11) NOT NULL PRIMARY KEY,
+  name varchar(50) NOT NULL
+  );
+
+
+CREATE TABLE subcategories (
+  subcategoryid int(11) NOT NULL PRIMARY KEY,
+  name varchar(20) NOT NULL,
+  categoryid int(11) NOT NULL FOREIGN KEY,
+  FOREIGN KEY (categoryid) REFERENCES categories (categoryid)
+);
+
+CREATE TABLE IF NOT EXISTS `users` (
+  userID int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  username varchar(20) NOT NULL,
+  password varchar(20) NOT NULL,
+  firstname varchar(30)NOT NULL,
+  lastname varchar(30) NOT NULL,
+  email varchar(50) NOT NULL,
+);
+
